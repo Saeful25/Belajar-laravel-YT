@@ -31,6 +31,7 @@ Route::post('/register-proses',[LoginController::class,'register_proses'])->name
 
 Route::get('/',[HomeController::class,'dashboard'])->name('dashboard'); //->middleware('can:view_dashboard'); //pemanfaatan  middleware dengan laravel gate
 Route::get('/user',[HomeController::class,'index'])->name('index');
+Route::get('/assets',[HomeController::class,'assets'])->name('assets');
 Route::get('/create',[HomeController::class,'create'])->name('user.create');
 Route::post('/store',[HomeController::class,'store'])->name('user.store');
 
@@ -38,6 +39,7 @@ Route::get('/clientSide',[DataTableController::class,'clientSide'])->name('clien
 Route::get('/serverSide',[DataTableController::class,'serverSide'])->name('serverSide');
 
 Route::get('/edit/{id}',[HomeController::class,'edit'])->name('user.edit');
+Route::get('/detail/{id}',[HomeController::class,'detail'])->name('user.detail');
 Route::put('/update/{id}',[HomeController::class,'update'])->name('user.update');
 Route::delete('/delete/{id}',[HomeController::class,'delete'])->name('user.delete');
 
