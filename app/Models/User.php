@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\Ktp;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
@@ -39,4 +39,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function ktp()
+    {
+       return $this->hasOne(Ktp::class);
+    }
+
+    public function assets()
+    {
+        // belongsToMany untuk relasi many to many
+        return $this->belongsToMany(Asset::class, 'users_assets');
+    }
 }

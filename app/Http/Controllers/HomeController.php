@@ -8,6 +8,7 @@ use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 class HomeController extends Controller
 {
     //
@@ -36,7 +37,36 @@ class HomeController extends Controller
 
         return view('index', compact('data','request'));
     }
+    public function assets(Request $request){
+        
+        $data = new User;
+        // memfilter data
+        if($request->get('search')){
+            $data = $data->where('name','LIKE','%'.$request->get('search').'%')
+            ->orWhere('email','LIKE','%'.$request->get('search').'%');
+        }
+        if($request->get('tanggal')){
+            $data = $data->where('name','LIKE','%'.$request->get('search').'%')
+            ->orWhere('email','LIKE','%'.$request->get('search').'%');
+        }
+        // untuk menampilkan semua data termasuk yang sudah terhapus
+        // $data = $data->withTrashed();
 
+        // untuk menapilkan hanya data yang sudah terhapus
+        // $data = $data->onlyTrashed();
+        $data = $data->get();
+
+        if($request->get('export') == 'pdf')
+        {
+        $pdf = Pdf::loadView('pdf.assets',['data' => $data] );
+        // untuk menampilkan pdf
+        return $pdf->stream('Data Assets.pdf');
+        // lansung download
+        // return $pdf->download('Data Assets.pdf');
+        }
+
+        return view('assets', compact('data','request'));
+    }
     public function create(){
         return view('create');
     }
@@ -69,6 +99,10 @@ class HomeController extends Controller
     public function edit(Request $request,$id){
         $data = User::find($id);
         return view('edit',compact('data'));
+    }
+    public function detail(Request $request,$id){
+        $data = User::find($id);
+        return view('detail',compact('data'));
     }
 
     public function update(Request $request, $id){ 
@@ -123,7 +157,7 @@ class HomeController extends Controller
 
             // untuk supaya langsung terhapus dari database meskipun di database ada system soft delete (delete_at)
             // $data->forceDelete();
-            
+
             $data->delete();
         }
         // Alert::success('Success','Anda berhasil menghapus');
