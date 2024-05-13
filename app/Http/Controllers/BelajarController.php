@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class BelajarController extends Controller
 {
@@ -87,5 +88,30 @@ class BelajarController extends Controller
 
         $params = Crypt::decrypt($params);
         dd($params);
+    }
+
+    public function hashing()
+    {
+        $string = "Saefulloh123!";
+        $hash = Hash::make($string);
+
+        echo "string " . $string . "<br><br>";
+        echo "Hasil Hashing " .$hash . "<br><br>";
+        echo "<hr>";
+
+        $string2 = "Saefulloh123!";
+        $hash2 = Hash::make($string2);
+
+        echo "string 2 " . $string2 . "<br><br>";
+        echo "Hasil Hashing 2" .$hash2 . "<br><br>";
+
+        $pengecekan = Hash::check($string2, $hash);
+        echo "<br>";
+        if ($pengecekan) {
+            echo "Password Benar";
+        } else {
+            echo "Password Salah";
+        }
+
     }
 }

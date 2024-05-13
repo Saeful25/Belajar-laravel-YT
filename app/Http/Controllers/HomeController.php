@@ -8,6 +8,7 @@ use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 class HomeController extends Controller
 {
     //
@@ -44,12 +45,25 @@ class HomeController extends Controller
             $data = $data->where('name','LIKE','%'.$request->get('search').'%')
             ->orWhere('email','LIKE','%'.$request->get('search').'%');
         }
+        if($request->get('tanggal')){
+            $data = $data->where('name','LIKE','%'.$request->get('search').'%')
+            ->orWhere('email','LIKE','%'.$request->get('search').'%');
+        }
         // untuk menampilkan semua data termasuk yang sudah terhapus
         // $data = $data->withTrashed();
 
         // untuk menapilkan hanya data yang sudah terhapus
         // $data = $data->onlyTrashed();
         $data = $data->get();
+
+        if($request->get('export') == 'pdf')
+        {
+        $pdf = Pdf::loadView('pdf.assets',['data' => $data] );
+        // untuk menampilkan pdf
+        return $pdf->stream('Data Assets.pdf');
+        // lansung download
+        // return $pdf->download('Data Assets.pdf');
+        }
 
         return view('assets', compact('data','request'));
     }

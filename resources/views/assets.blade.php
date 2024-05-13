@@ -27,6 +27,7 @@
             <div class="row">
                 <div class="col-12">
                     <a href="{{route('user.create')}}" class="btn btn-primary mb-3"><i class="fas fa-plus-circle"></i> Tambah Data</a>
+                    <a href="{{route('assets')}}?export=pdf" class="btn btn-danger ml-3 mb-3"><i class="fas fa-plus"></i> Export PDF</a>
                   <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">Responsive Hover Table</h3>
